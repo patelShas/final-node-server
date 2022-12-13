@@ -1,7 +1,7 @@
 export default [
     {
         "_id": "5643",
-        "album_id": "123",
+        "album_id": "6VoOCCv0bXPrTHDncJyIgF",
         "text": "I found this by scrolling through their discography",
         "score": 3,
         "date": "2022-12",
@@ -10,7 +10,7 @@ export default [
     },
     {
         "_id": "5678",
-        "album_id": "234",
+        "album_id": "4SZko61aMnmgvNhfhgTuD3",
         "text": "He made graduation",
         "score": 5,
         "date": "2022-10",
@@ -19,7 +19,7 @@ export default [
     },
     {
         "_id": "2167",
-        "album_id": "234",
+        "album_id": "4SZko61aMnmgvNhfhgTuD3",
         "text": "NVM",
         "score": 0,
         "date": "2022-12",

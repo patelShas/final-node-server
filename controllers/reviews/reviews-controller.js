@@ -1,4 +1,5 @@
 import hot_takes from "./reviews.js"
+import * as reviewsDao from "./reviews-dao.js"
 let reviews = hot_takes
 
 const ReviewsController = (app) => {
@@ -9,46 +10,52 @@ const ReviewsController = (app) => {
     app.put('/api/reviews/:uid', updateReview);
 }
 
-const findReviews = (req, res) => {
-    const album_id = req.query.album_id
-    if(album_id) {
-        const albumReviews = reviews
-            .filter(u => u.album_id === album_id)
-        res.json(albumReviews)
+const findReviews = async (req, res) => {
+    if (req.query.reviewer) {
+        findReviewsByUser(req, res)
+        return
+    } else if (req.query.album_id) {
+        findReviewsByAlbum(req, res)
         return
     }
+    const reviews = await reviewsDao.findReviews()
     res.json(reviews)
 }
 
-const findReviewById = (req, res) => {
-    const revID = req.params.uid;
-    const revs = reviews
-        .find(r => r._id === revID);
-    res.json(revs);
+const findReviewsByAlbum = async (req, res) => {
+    const album_id = req.query.album_id
+    const reviews = await reviewsDao.findReviewsByAlbum(album_id)
+    res.json(reviews)
 }
 
-const createReview = (req, res) => {
+const findReviewsByUser = async (req, res) => {
+    const user_name = req.query.reviewer
+    const reviews = await reviewsDao.findReviewsByUser(user_name)
+    res.json(reviews)
+}
+
+const findReviewById = async (req, res) => {
+    const r_ID = req.params.uid;
+    const reviews = await reviewsDao.findReviewsById(r_ID)
+    res.json(reviews);
+}
+
+const createReview = async (req, res) => {
     const newRev = req.body;
-    newRev._id = (new Date()).getTime() + '';
-    reviews.push(newRev);
+    await reviewsDao.createReview(newRev);
     res.json(newRev);
 }
 
-const deleteReview = (req, res) => {
+const deleteReview = async (req, res) => {
     const revId = req.params['uid'];
-    reviews = reviews.filter(rev =>
-        rev._id !== revId);
+    await reviewsDao.deleteReview(revId);
     res.sendStatus(200);
 }
 
-const updateReview = (req, res) => {
+const updateReview = async (req, res) => {
     const revId = req.params['uid'];
     const updates = req.body;
-    reviews = reviews.map((rev) =>
-        rev._id === revId ?
-            {...rev, ...updates} :
-            rev
-    );
+    await reviewsDao.updateReview(revId, updates)
     res.sendStatus(200);
 }
 
