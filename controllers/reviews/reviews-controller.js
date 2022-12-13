@@ -42,7 +42,7 @@ const findReviewById = async (req, res) => {
 
 const createReview = async (req, res) => {
     const newRev = req.body;
-    await reviewsDao.createReview(newRev);
+    await reviewsDao.createReview(newRev).then(result => newRev._id = result._id);
     res.json(newRev);
 }
 

@@ -4,6 +4,7 @@ const schema = mongoose.Schema({
     text: String,
     date: String,
     reviewer: String,
+    score: Number,
     likes: Number
 }, {collection: 'reviews'});
 export default schema;
