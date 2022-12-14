@@ -1,55 +1,39 @@
-import people from './users.js'
-let users = people
+import * as usersDao from './users-dao.js'
+
 
 const UsersController = (app) => {
     app.get('/api/users', findUsers)
-    app.get('/api/users/:uid', findUserById);
-    app.post('/api/users', createUser);
-    app.delete('/api/users/:uid', deleteUser);
-    app.put('/api/users/:uid', updateUser);
+    app.post('/api/register', register);
+    app.post('/api/login', login);
 }
 
-const findUsers = (req, res) => {
-    const type = req.query.type
-    if(type) {
-        const usersOfType = users
-            .filter(u => u.type === type)
-        res.json(usersOfType)
-        return
-    }
+const findUsers = async (req, res) => {
+    const users = await usersDao.findUsers()
     res.json(users)
 }
 
-const findUserById = (req, res) => {
-    const userId = req.params.uid;
-    const user = users
-        .find(u => u._id === userId);
-    res.json(user);
+const login = async (req, res) => {
+    var username = req.body.username;
+    var password = req.body.password;
+    const user = await usersDao.findUserByCredentials(username, password)
+    res.send(user || null)
 }
 
-const createUser = (req, res) => {
-    const newUser = req.body;
-    newUser._id = (new Date()).getTime() + '';
-    users.push(newUser);
-    res.json(newUser);
-}
-
-const deleteUser = (req, res) => {
-    const userId = req.params['uid'];
-    users = users.filter(usr =>
-        usr._id !== userId);
-    res.sendStatus(200);
-}
-
-const updateUser = (req, res) => {
-    const userId = req.params['uid'];
-    const updates = req.body;
-    users = users.map((usr) =>
-        usr._id === userId ?
-            {...usr, ...updates} :
-            usr
-    );
-    res.sendStatus(200);
+const register = async (req, res) => {
+    var username = req.body.username;
+    var password = req.body.password;
+    var type = req.body.type;
+    var bio = req.body.bio;
+    var newUser = {
+        username: username, password: password, type: type, bio: bio, following: []
+    };
+    var presentUser = await usersDao.findUser(username)
+    if (!presentUser) {
+        await usersDao.createUser(newUser)
+        res.send(newUser)
+    } else {
+        res.send(null)
+    }
 }
 
 

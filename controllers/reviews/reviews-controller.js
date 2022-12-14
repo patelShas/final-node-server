@@ -1,6 +1,4 @@
-import hot_takes from "./reviews.js"
 import * as reviewsDao from "./reviews-dao.js"
-let reviews = hot_takes
 
 const ReviewsController = (app) => {
     app.get('/api/reviews', findReviews)
