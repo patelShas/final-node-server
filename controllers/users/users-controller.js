@@ -76,9 +76,7 @@ const register = async (req, res) => {
 const updateUser = async (req, res) => {
     const updates = req.body;
     const uid = updates._id
-    console.log(updates)
     const results = await usersDao.updateUser(uid, updates)
-    console.log(results)
     req.session['profile'] = updates;
     res.send(updates)
 }

@@ -9,26 +9,7 @@ const ReviewsController = (app) => {
 }
 
 const findReviews = async (req, res) => {
-    if (req.query.reviewer) {
-        findReviewsByUser(req, res)
-        return
-    } else if (req.query.album_id) {
-        findReviewsByAlbum(req, res)
-        return
-    }
-    const reviews = await reviewsDao.findReviews()
-    res.json(reviews)
-}
-
-const findReviewsByAlbum = async (req, res) => {
-    const album_id = req.query.album_id
-    const reviews = await reviewsDao.findReviewsByAlbum(album_id)
-    res.json(reviews)
-}
-
-const findReviewsByUser = async (req, res) => {
-    const user_name = req.query.reviewer
-    const reviews = await reviewsDao.findReviewsByUser(user_name)
+    const reviews = await reviewsDao.findReviews(req.query)
     res.json(reviews)
 }
 
