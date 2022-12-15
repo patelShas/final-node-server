@@ -24,6 +24,9 @@ export const anon = {
 
 const findUsers = async (req, res) => {
     const users = await usersDao.findUsers()
+    users.map(user => {
+        user.password = "nice_try"
+    })
     res.json(users)
 }
 
