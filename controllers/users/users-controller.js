@@ -8,6 +8,8 @@ const UsersController = (app) => {
     app.post('/api/auth/login', login);
     app.post('/api/auth/logout', logout);
 
+    app.put('/api/auth/:uname', updateUser)
+
 }
 
 export const anon = {
@@ -61,6 +63,14 @@ const register = async (req, res) => {
     } else {
         res.send(anon)
     }
+}
+
+const updateUser = async (req, res) => {
+    const updates = req.body;
+    const uid = updates._id
+    await usersDao.updateUser(uid, updates)
+    req.session['profile'] = updates;
+    res.send(200)
 }
 
 
