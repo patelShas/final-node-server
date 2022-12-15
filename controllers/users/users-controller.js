@@ -10,6 +10,8 @@ const UsersController = (app) => {
 
     app.put('/api/auth/:uname', updateUser)
 
+    app.get('/api/user/:user_name', findUser)
+
 }
 
 export const anon = {
@@ -23,6 +25,12 @@ export const anon = {
 const findUsers = async (req, res) => {
     const users = await usersDao.findUsers()
     res.json(users)
+}
+
+const findUser = async (req, res) => {
+    const user_name = req.params['user_name']
+    const user = await usersDao.findUser(user_name)
+    res.json(user)
 }
 
 const profile = (req, res) => {
@@ -68,9 +76,11 @@ const register = async (req, res) => {
 const updateUser = async (req, res) => {
     const updates = req.body;
     const uid = updates._id
-    await usersDao.updateUser(uid, updates)
+    console.log(updates)
+    const results = await usersDao.updateUser(uid, updates)
+    console.log(results)
     req.session['profile'] = updates;
-    res.send(200)
+    res.send(updates)
 }
 
 

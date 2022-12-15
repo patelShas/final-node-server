@@ -53,7 +53,7 @@ const deleteReview = async (req, res) => {
 const updateReview = async (req, res) => {
     const revId = req.params['uid'];
     const updates = req.body;
-    await reviewsDao.updateReview(revId, updates)
+    const result = await reviewsDao.updateReview(revId, updates)
     res.sendStatus(200);
 }
 
