@@ -33,6 +33,7 @@ const findUsers = async (req, res) => {
 const findUser = async (req, res) => {
     const user_name = req.params['user_name']
     const user = await usersDao.findUser(user_name)
+    user.password = "nice_try"
     res.json(user)
 }
 

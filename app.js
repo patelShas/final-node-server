@@ -6,10 +6,9 @@ import ReviewsController from "./controllers/reviews/reviews-controller.js";
 import SessionController from "./session/session-controller.js";
 import mongoose from "mongoose";
 
-const CONNECTION_STRING = "mongodb+srv://spotty_reviews:sraccess@cluster0.sr1nuyy.mongodb.net/?retryWrites=true&w=majority"
 import session from 'express-session'
 
-mongoose.connect(CONNECTION_STRING);
+mongoose.connect(process.env.SPOTTY_CONNECTION_STRING);
 const app = express();
 app.use(cors({
     credentials: true,
@@ -18,7 +17,7 @@ app.use(cors({
 app.use(express.json());
 app.set('trust proxy', 1)
 app.use(session({
-    secret: "smthn_lol",
+    secret: process.env.SPOTTY_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {secure: false},
@@ -26,4 +25,4 @@ app.use(session({
 UsersController(app);
 ReviewsController(app);
 SessionController(app);
-app.listen(4000);
+app.listen(process.env.PORT || 4000);
