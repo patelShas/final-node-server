@@ -12,7 +12,7 @@ mongoose.connect(process.env.SPOTTY_CONNECTION_STRING);
 const app = express();
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: process.env.SPOTTY_REACT || 'http://localhost:3000'
 }));
 app.use(express.json());
 app.set('trust proxy', 1)
